@@ -1,0 +1,1 @@
+springcloud gateway -->注册到nacos注册中心

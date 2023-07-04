@@ -1,0 +1,16 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    name: user-service
+  main:
+    allow-bean-definition-overriding: true
+
+  cloud:
+    nacos:
+      discovery: #注册中心
+        server-addr: 127.0.0.1:8837,127.0.0.1:8848,127.0.0.1:8859
+      config: #配置中心
+        server-addr: 127.0.0.1:8837,127.0.0.1:8848,127.0.0.1:8859
+        file-extension: yaml
