@@ -2,6 +2,7 @@ package com.userservice.config;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -27,6 +28,7 @@ public class RestTemplateConfig {
     private CloseableHttpClient httpClient;
 
     @Bean
+    @LoadBalanced
     public RestTemplate getRestTemplate() {
         RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
         List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
