@@ -27,3 +27,15 @@ spring:
             - Path=/** #断言配置，**无限制
           filters:
             - StripPrefix=1 #过滤器
+        - id: oauth2_service_route
+          uri: lb://oauth2-service
+          predicates:
+            - Path=/** #断言配置，**无限制
+          filters:
+            - StripPrefix=1 #过滤器
+
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/oauth?serverTimeZone=UTC&useSSL=false
+#    username: root
+#    password: root
