@@ -1,11 +1,9 @@
 server:
-  port: 9093
+  port: 9094
 
 spring:
   application:
-    name: user-service
-  main:
-    allow-bean-definition-overriding: true
+    name: sms-service
 
   cloud:
     nacos:
@@ -14,12 +12,6 @@ spring:
       config: #配置中心
         server-addr: 127.0.0.1:8837,127.0.0.1:8848,127.0.0.1:8859
         file-extension: yaml
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/oauth?serverTimeZone=UTC&useSSL=false
-    username: root
-    password: root
 
   redis:
     host: localhost
@@ -32,3 +24,15 @@ spring:
         max-idle: 50
         max-wait: -1ms
         min-idle: 0
+
+#购买tencent sms服务后获取
+#tencent:
+#  sms:
+#    secretId:
+#    secretKey:
+#    region:
+#    appId:
+#    signName:
+#    template-id:
+#      phoneCode:
+#      sales:

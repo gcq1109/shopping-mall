@@ -8,6 +8,7 @@
         <module>user-service</module>
         <module>oauth2-service</module>
         <module>common</module>
+        <module>sms-service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
