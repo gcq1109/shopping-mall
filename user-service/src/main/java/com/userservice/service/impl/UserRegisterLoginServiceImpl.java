@@ -1,9 +1,11 @@
 package com.userservice.service.impl;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.common.response.CommonResponse;
 import com.common.response.ResponseCode;
 import com.common.response.ResponseUtils;
+import com.userservice.config.GiteeConfig;
 import com.userservice.pojo.AuthGrantType;
 import com.userservice.pojo.Oauth2Client;
 import com.userservice.pojo.RegisterType;
@@ -27,6 +29,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,22 +52,17 @@ public class UserRegisterLoginServiceImpl implements UserRegisterLoginService {
     private RedisCommonProcessor redisCommonProcessor;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RestTemplate innerRestTemplate;
+
+    @Autowired
+    private RestTemplate outerRestTemplate;
 
     @Resource(name = "transactionManager")
     private JpaTransactionManager transactionManager;
 
-    /**
-     * 用户注册：
-     * 1.db不存在该用户
-     * 2.设置对象主体
-     * 3.db存储
-     * 4.redis存储
-     * 5.验证登陆状态，通过oauth和db查询该用户
-     * <p>
-     * 注：若此时事务在方法主体控制，执行第五步的时候事务未提交，导致验证失败，需手动开启事务
-     * TODO 思考：只在save方法中添加注解是否可行？
-     */
+    @Autowired
+    private GiteeConfig giteeConfig;
+
     @Override
 //    @Transactional(propagation = Propagation.REQUIRED)
     public CommonResponse namePasswdRegister(User user) {
@@ -135,7 +133,51 @@ public class UserRegisterLoginServiceImpl implements UserRegisterLoginService {
             oauthClientRepository.updateSecretByClientId(encodePasswd, phoneNumber);
         }
         return ResponseUtils.successResponse(formatResponseContent(user
-                , generateOauthToken(AuthGrantType.password, user.getUserName(), encodePasswd, user.getUserName(), encodePasswd)));
+                , generateOauthToken(AuthGrantType.client_credentials, null, null, phoneNumber, encodePasswd)));
+    }
+
+    @Override
+    public CommonResponse thirdPartyGiteeRegister(HttpServletRequest request) {
+        String code = request.getParameter("code");
+        String state = request.getParameter("state");
+        if (!giteeConfig.getState().equalsIgnoreCase(state)) {
+            throw new UnsupportedOperationException("Invalid state");
+        }
+        String tokenUrl = String.format(giteeConfig.getTokenUrl(), giteeConfig.getClientId()
+                , giteeConfig.getClientSecret(), giteeConfig.getCallBack(), code);
+        JSONObject tokenResult = outerRestTemplate.postForObject(tokenUrl, null, JSONObject.class);
+        String token = String.valueOf(tokenResult.get("access_token"));
+
+        String userUrl = String.format(giteeConfig.getUserUrl(), token);
+        JSONObject userInfo = outerRestTemplate.getForObject(userUrl, JSONObject.class);
+
+        //确保用户名唯一
+        String userName = giteeConfig.getState().concat("_" + userInfo.get("name"));
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encodePasswd = bCryptPasswordEncoder.encode(userName);
+
+        User user = userRepository.findByUserName(userName);
+        if (user == null) {
+            user = User.builder()
+                    .userName(userName)
+                    .passwd("")
+                    .userRole(RegisterType.THIRTY_PARTY.name())
+                    .build();
+            Oauth2Client oauth2Client = Oauth2Client.builder()
+                    .clientId(userName)
+                    .clientSecret(encodePasswd)
+                    .resourceIds(RegisterType.THIRTY_PARTY.name())
+                    .authorizedGranTypes(AuthGrantType.refresh_token.name().concat(",").concat(AuthGrantType.client_credentials.name()))
+                    .scope("web")
+                    .authorities(RegisterType.THIRTY_PARTY.name())
+                    .build();
+            Integer userId = this.saveUserAndOauthClient(user, oauth2Client);
+            String personId = userId + 10000000 + "";
+            redisCommonProcessor.set(personId, user);
+        }
+
+        return ResponseUtils.successResponse(formatResponseContent(user
+                , generateOauthToken(AuthGrantType.client_credentials, null, null, userName, userName)));
     }
 
     private String getSystemDefinedUserName(String phoneNumber) {
@@ -179,7 +221,7 @@ public class UserRegisterLoginServiceImpl implements UserRegisterLoginService {
         }
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, httpHeaders);
-        return restTemplate.postForObject("http://oauth2-service/oauth/token", requestEntity, Map.class);
+        return innerRestTemplate.postForObject("http://oauth2-service/oauth/token", requestEntity, Map.class);
     }
 
     private Map formatResponseContent(User user, Map authClient) {

@@ -27,9 +27,23 @@ public class RestTemplateConfig {
     @Autowired
     private CloseableHttpClient httpClient;
 
-    @Bean
-    @LoadBalanced
+    @Bean(name = "innerRestTemplate")
+    @LoadBalanced //springcloud读取nacos注册中心添加此注解，springcloud以外的请求不可使用
     public RestTemplate getRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
+        List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
+        Iterator<HttpMessageConverter<?>> iterator = messageConverters.iterator();
+        while (iterator.hasNext()) {
+            HttpMessageConverter<?> converter = iterator.next();
+            if (converter instanceof StringHttpMessageConverter) {
+                ((StringHttpMessageConverter) converter).setDefaultCharset(StandardCharsets.UTF_8);
+            }
+        }
+        return restTemplate;
+    }
+
+    @Bean(name = "outerRestTemplate")
+    public RestTemplate getOutRestTemplate() {
         RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
         List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         Iterator<HttpMessageConverter<?>> iterator = messageConverters.iterator();

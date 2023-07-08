@@ -6,6 +6,8 @@ import com.userservice.service.UserRegisterLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author gcq1109
  * @description: 注册
@@ -25,8 +27,13 @@ public class UserRegisterLoginController {
     }
 
     @PostMapping("/phone-code")
-    public CommonResponse namePasswdRegister(@RequestParam String phoneNumber,
-                                             @RequestParam String code) {
+    public CommonResponse phoneCodeRegister(@RequestParam String phoneNumber,
+                                            @RequestParam String code) {
         return userRegisterLoginService.phoneCodeRegister(phoneNumber, code);
+    }
+
+    @RequestMapping("/gitee")
+    public CommonResponse thirdPartyGiteeRegister(@RequestBody HttpServletRequest request) {
+        return userRegisterLoginService.thirdPartyGiteeRegister(request);
     }
 }
