@@ -36,4 +36,10 @@ public class UserRegisterLoginController {
     public CommonResponse thirdPartyGiteeRegister(@RequestBody HttpServletRequest request) {
         return userRegisterLoginService.thirdPartyGiteeRegister(request);
     }
+
+    @PostMapping("/login")
+    public CommonResponse login(@RequestParam String userName,
+                                @RequestParam String password) {
+        return userRegisterLoginService.login(userName, password);
+    }
 }

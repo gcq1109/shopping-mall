@@ -42,4 +42,13 @@ public interface UserRegisterLoginService {
      * @return
      */
     CommonResponse thirdPartyGiteeRegister(HttpServletRequest request);
+
+    /**
+     * 传统登录
+     *
+     * @param userName
+     * @param password
+     * @return
+     */
+    CommonResponse login(String userName, String password);
 }

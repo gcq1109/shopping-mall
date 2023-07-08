@@ -42,6 +42,17 @@ public class RedisCommonProcessor {
         }
     }
 
+    public void setTimeoutDays(String key, Object value, long days) {
+        if (key == null) {
+            throw new UnsupportedOperationException("error");
+        }
+        if (days > 0) {
+            redisTemplate.opsForValue().set(key, value, days, TimeUnit.DAYS);
+        } else {
+            set(key, value);
+        }
+    }
+
     public void remove(String key) {
         redisTemplate.delete(key);
     }

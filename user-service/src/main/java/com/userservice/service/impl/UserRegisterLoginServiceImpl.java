@@ -66,6 +66,7 @@ public class UserRegisterLoginServiceImpl implements UserRegisterLoginService {
     @Override
 //    @Transactional(propagation = Propagation.REQUIRED)
     public CommonResponse namePasswdRegister(User user) {
+        //用户已存在
         if (userRepository.findByUserName(user.getUserName()) == null
                 && oauthClientRepository.findByClientId(user.getUserName()) == null) {
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -85,7 +86,7 @@ public class UserRegisterLoginServiceImpl implements UserRegisterLoginService {
             Integer uid = saveUserAndOauthClient(user, oauth2Client);
 
             String personId = uid + 10000000 + "";
-            redisCommonProcessor.set(personId, user);
+            redisCommonProcessor.setTimeoutDays(personId, user, 30);
 
             return ResponseUtils.successResponse(
                     formatResponseContent(user,
@@ -127,7 +128,7 @@ public class UserRegisterLoginServiceImpl implements UserRegisterLoginService {
                     .build();
             Integer userId = this.saveUserAndOauthClient(user, oauth2Client);
             String personId = userId + 10000000 + "";
-            redisCommonProcessor.set(personId, user);
+            redisCommonProcessor.setTimeoutDays(personId, user, 30);
         } else {
             //二次登录
             oauthClientRepository.updateSecretByClientId(encodePasswd, phoneNumber);
@@ -173,11 +174,25 @@ public class UserRegisterLoginServiceImpl implements UserRegisterLoginService {
                     .build();
             Integer userId = this.saveUserAndOauthClient(user, oauth2Client);
             String personId = userId + 10000000 + "";
-            redisCommonProcessor.set(personId, user);
+            redisCommonProcessor.setTimeoutDays(personId, user, 30);
         }
 
         return ResponseUtils.successResponse(formatResponseContent(user
                 , generateOauthToken(AuthGrantType.client_credentials, null, null, userName, userName)));
+    }
+
+    @Override
+    public CommonResponse login(String userName, String password) {
+        User user = userRepository.findByUserName(userName);
+        if (user == null) {
+            return ResponseUtils.failResponse(ResponseCode.FAULT_REQUEST.getCode(), null, "user not exist");
+        }
+
+        Map content = formatResponseContent(user,
+                generateOauthToken(AuthGrantType.password, userName, password, userName, password));
+        String personId = user.getId() + 1000000 + "";
+        redisCommonProcessor.setTimeoutDays(personId, user, 30);
+        return ResponseUtils.successResponse(content);
     }
 
     private String getSystemDefinedUserName(String phoneNumber) {
