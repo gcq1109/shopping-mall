@@ -190,7 +190,7 @@ public class UserRegisterLoginServiceImpl implements UserRegisterLoginService {
 
         Map content = formatResponseContent(user,
                 generateOauthToken(AuthGrantType.password, userName, password, userName, password));
-        String personId = user.getId() + 1000000 + "";
+        String personId = user.getId() + 10000000 + "";
         redisCommonProcessor.setTimeoutDays(personId, user, 30);
         return ResponseUtils.successResponse(content);
     }

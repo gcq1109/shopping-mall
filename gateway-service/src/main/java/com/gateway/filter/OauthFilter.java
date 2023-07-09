@@ -59,10 +59,10 @@ public class OauthFilter implements GlobalFilter, Ordered {
         }
 
         //校验通过,请求转发或者添加headers
-//        ServerHttpRequest httpRequest = request.mutate().headers(httpHeaders -> {
-//            httpHeaders.set("traceId", "------------");
-//        }).build();
-//        exchange.mutate().request(httpRequest);
+        ServerHttpRequest httpRequest = request.mutate().headers(httpHeaders -> {
+            httpHeaders.set("personId", request.getHeaders().getFirst("personId"));
+        }).build();
+        exchange.mutate().request(httpRequest);
 
         return chain.filter(exchange);
     }
