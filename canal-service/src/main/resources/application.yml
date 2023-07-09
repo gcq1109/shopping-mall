@@ -1,0 +1,32 @@
+server:
+  port: 9095
+
+spring:
+  application:
+    name: canal-service
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+  cloud:
+    nacos:
+      discovery: #注册中心
+        server-addr: 127.0.0.1:8837,127.0.0.1:8848,127.0.0.1:8859
+      config: #配置中心
+        server-addr: 127.0.0.1:8837,127.0.0.1:8848,127.0.0.1:8859
+        file-extension: yaml
+
+  redis:
+    host: localhost
+    port: 6379
+    password: 191e37c4b37811e5bf47-00163e040c5d
+    timeout: 10s
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 50
+        max-wait: -1ms
+        min-idle: 0
