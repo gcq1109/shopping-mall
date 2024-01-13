@@ -1,0 +1,34 @@
+server:
+  port: 8620
+
+spring:
+  application:
+    name: admin-service
+  main:
+    allow-bean-definition-overriding: true
+
+  cloud:
+    nacos:
+      discovery: #注册中心
+        server-addr: 127.0.0.1:8837,127.0.0.1:8848,127.0.0.1:8859
+      config: #配置中心
+        server-addr: 127.0.0.1:8837,127.0.0.1:8848,127.0.0.1:8859
+        file-extension: yaml
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/commodity?serverTimeZone=UTC&useSSL=false
+    username: root
+    password: root
+
+  redis:
+    host: localhost
+    port: 6379
+    password: 191e37c4b37811e5bf47-00163e040c5d
+    timeout: 10s
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 50
+        max-wait: -1ms
+        min-idle: 0

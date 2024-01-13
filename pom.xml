@@ -10,6 +10,7 @@
         <module>common</module>
         <module>sms-service</module>
         <module>canal-service</module>
+        <module>admin_service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
