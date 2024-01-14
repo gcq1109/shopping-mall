@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 /**
  * @author gcq1109
  * @description: 无主键表查询需要将两个平等的category_id和brand_id组装查询
- * @date 2024/1/13 15:08
  * @email gcq1109@126.com
  */
 @Repository

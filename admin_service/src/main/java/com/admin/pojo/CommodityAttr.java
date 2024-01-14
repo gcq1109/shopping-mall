@@ -6,30 +6,41 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author gcq1109
- * @description: 品牌表
- * @email gcq1109@126.com
- */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "commodity_brand")
-public class CommodityBrand {
+@Table(name = "commodity_attr")
+public class CommodityAttr implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "category_id")
+    private Long categoryId;
+
+    @Column(name = "group_id")
+    private Long groupId;
+
     private String name;
 
-    private String image;
+    @Column(name = "is_numeric")
+    private Integer isNumeric;
 
-    private Integer letter;
+    private String unit;
+
+    @Column(name = "is_sku_generic")
+    private Integer isSkuGeneric;
+
+    @Column(name = "is_search")
+    private Integer isSearch;
+
+    private String segments;
 
     @Column(name = "create_time")
     private Date createTime;

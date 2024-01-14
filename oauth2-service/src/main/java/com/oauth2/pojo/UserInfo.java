@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 /**
  * @author gcq1109
- * @date 2023/7/4 17:24
  * @email gcq1109@126.com
  */
 @Data

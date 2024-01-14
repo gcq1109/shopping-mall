@@ -1,23 +1,19 @@
 package com.admin.service;
 
-import com.admin.pojo.CommodityCategory;
-import com.admin.pojo.CommodityCategoryComposite;
+import com.admin.pojo.*;
 import com.admin.processor.RedisCommonProcessor;
+import com.admin.repo.CommodityBrandRepository;
 import com.admin.repo.CommodityCategoryBrandRepository;
 import com.admin.repo.CommodityCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author gcq1109
- * @date 2024/1/13 15:27
  * @email gcq1109@126.com
  */
 @Service
@@ -32,6 +28,9 @@ public class CommodityCategoryService {
 
     @Autowired
     private CommodityCategoryBrandRepository commodityCategoryBrandRepository;
+
+    @Autowired
+    private CommodityBrandRepository commodityBrandRepository;
 
     /**
      * 设计模式：组合模式
@@ -88,5 +87,29 @@ public class CommodityCategoryService {
         commodityCategoryBrandRepository.deleteByCategoryId(id);
         //清除缓存
         redisCommonProcessor.remove("category");
+    }
+
+    @Transactional
+    public void createBrandRelation(Long brandId, Long categoryId) {
+        Optional<CommodityCategory> category = commodityCategoryRepository.findById(categoryId);
+        if (!category.isPresent()) {
+            throw new RuntimeException("categoryId is invalid");
+        }
+
+        Optional<CommodityBrand> brandOptional = commodityBrandRepository.findById(brandId);
+        if (!brandOptional.isPresent()) {
+            throw new RuntimeException("categoryId is invalid");
+        }
+        CommodityCategoryBrand categoryBrand = CommodityCategoryBrand.builder()
+                .brandId(brandId)
+                .categoryId(categoryId).build();
+        commodityCategoryBrandRepository.save(categoryBrand);
+    }
+
+    public void deleteBrandRelation(Long brandId, Long categoryId) {
+        CommodityCategoryBrandPrimaryKey categoryBrandPrimaryKey = CommodityCategoryBrandPrimaryKey.builder()
+                .categoryId(categoryId)
+                .brandId(brandId).build();
+        commodityCategoryBrandRepository.deleteById(categoryBrandPrimaryKey);
     }
 }

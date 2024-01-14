@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * @author gcq1109
  * @description: 网络安全配置类
- * @date 2023/7/4 20:13
  * @email gcq1109@126.com
  */
 @Configuration

@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * @author gcq1109
  * @description: feign配置，用来解决gateway引入feign出现的httpRequest decodeExceptions
- * @date 2023/7/5 16:48
  * @email gcq1109@126.com
  */
 @Configuration

@@ -17,7 +17,6 @@
 ///**
 // * @author gcq1109
 // * @description: 配置类
-// * @date 2023/7/5 14:57
 // * @email gcq1109@126.com
 // */
 //@Configuration

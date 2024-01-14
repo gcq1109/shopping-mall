@@ -24,7 +24,6 @@ import javax.sql.DataSource;
 /**
  * @author gcq1109
  * @description: oauth配置
- * @date 2023/7/4 19:33
  * @email gcq1109@126.com
  */
 @Configuration

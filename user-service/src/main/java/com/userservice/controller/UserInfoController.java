@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author gcq1109
  * @description: 用户信息
- * @date 2023/7/9 13:37
  * @email gcq1109@126.com
  */
 @RestController

@@ -7,7 +7,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @author gcq1109
- * @date 2023/7/4 15:31
  * @email gcq1109@126.com
  */
 @SpringBootApplication

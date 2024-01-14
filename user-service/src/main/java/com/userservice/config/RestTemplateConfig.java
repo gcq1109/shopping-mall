@@ -18,7 +18,6 @@ import java.util.List;
  * @author gcq1109
  * @description: restTemplate底层使用的是url connection，对于一些复杂场景不太适用，
  * 所以使用httpClient替换
- * @date 2023/7/5 19:45
  * @email gcq1109@126.com
  */
 @Configuration

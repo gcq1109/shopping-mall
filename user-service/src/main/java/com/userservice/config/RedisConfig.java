@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 /**
  * @author gcq1109
  * @description: redis配置类
- * @date 2023/7/5 19:26
  * @email gcq1109@126.com
  */
 @Component

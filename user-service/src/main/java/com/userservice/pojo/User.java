@@ -11,7 +11,6 @@ import java.util.Date;
 /**
  * @author gcq1109
  * @description: 用户info
- * @date 2023/7/5 21:03
  * @email gcq1109@126.com
  */
 @Data

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author gcq1109
- * @date 2023/7/7 15:50
  * @email gcq1109@126.com
  */
 @RestController

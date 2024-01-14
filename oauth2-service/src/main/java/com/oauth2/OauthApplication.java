@@ -7,7 +7,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 /**
  * @author gcq1109
- * @date 2023/7/4 17:20
  * @email gcq1109@126.com
  */
 @EnableDiscoveryClient

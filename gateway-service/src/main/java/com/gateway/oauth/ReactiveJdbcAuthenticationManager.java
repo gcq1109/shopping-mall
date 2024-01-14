@@ -15,7 +15,6 @@
 ///**
 // * @author gcq1109
 // * @description: jdbc响应式权限校验管理器
-// * @date 2023/7/5 15:07
 // * @email gcq1109@126.com
 // */
 //public class ReactiveJdbcAuthenticationManager implements ReactiveAuthenticationManager {

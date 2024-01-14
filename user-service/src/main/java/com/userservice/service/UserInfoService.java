@@ -5,7 +5,6 @@ import com.common.response.CommonResponse;
 /**
  * @author gcq1109
  * @description: TODO
- * @date 2023/7/9 13:41
  * @email gcq1109@126.com
  */
 public interface UserInfoService {

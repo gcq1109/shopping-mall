@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author gcq1109
- * @date 2023/7/4 17:31
  * @email gcq1109@126.com
  */
 @Repository

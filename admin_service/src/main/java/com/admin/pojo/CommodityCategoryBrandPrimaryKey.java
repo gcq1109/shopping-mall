@@ -10,7 +10,6 @@ import java.io.Serializable;
 /**
  * @author gcq1109
  * @description: 类目品牌关联类主键组装
- * @date 2024/1/13 15:04
  * @email gcq1109@126.com
  */
 @Data

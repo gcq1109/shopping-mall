@@ -6,14 +6,10 @@ import com.common.response.CommonResponse;
 import com.common.response.ResponseCode;
 import com.common.response.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author gcq1109
- * @date 2024/1/13 15:24
  * @email gcq1109@126.com
  */
 
@@ -48,6 +44,22 @@ public class CommodityCategoryController {
     @RequestMapping("/delete/{id}")
     public CommonResponse deleteCategory(@PathVariable Long id) {
 //        commodityCategoryService.deleteCategory(id);
+        return ResponseUtils.successResponse("success");
+    }
+
+    //目录品牌中间表的新增
+    @RequestMapping("/createBrandRelation")
+    public CommonResponse createBrandRelation(@RequestParam(value = "brandId") Long brandId,
+                                              @RequestParam(value = "categoryId") Long categoryId) {
+        commodityCategoryService.createBrandRelation(brandId, categoryId);
+        return ResponseUtils.successResponse("success");
+    }
+
+    //目录品牌中间表的删除
+    @RequestMapping("/deleteBrandRelation")
+    public CommonResponse deleteBrandRelation(@RequestParam(value = "brandId") Long brandId,
+                                              @RequestParam(value = "categoryId") Long categoryId) {
+        commodityCategoryService.deleteBrandRelation(brandId, categoryId);
         return ResponseUtils.successResponse("success");
     }
 }

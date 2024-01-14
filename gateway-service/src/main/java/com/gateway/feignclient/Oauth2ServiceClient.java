@@ -9,7 +9,6 @@ import java.util.Map;
 /**
  * @author gcq1109
  * @description: feign调用oauth2
- * @date 2023/7/5 16:00
  * @email gcq1109@126.com
  */
 @FeignClient("oauth2-service")

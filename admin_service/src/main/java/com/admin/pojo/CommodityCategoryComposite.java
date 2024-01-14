@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * @author gcq1109
  * @description: 商品类目组合
- * @date 2024/1/13 14:57
  * @email gcq1109@126.com
  */
 @Data

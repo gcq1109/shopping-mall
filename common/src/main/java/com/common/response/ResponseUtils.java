@@ -2,7 +2,6 @@ package com.common.response;
 
 /**
  * @author gcq1109
- * @date 2023/7/5 19:04
  * @email gcq1109@126.com
  */
 public class ResponseUtils {

@@ -10,7 +10,6 @@ import javax.persistence.*;
 /**
  * @author gcq1109
  * @description: oauth client
- * @date 2023/7/5 21:04
  * @email gcq1109@126.com
  */
 @Data

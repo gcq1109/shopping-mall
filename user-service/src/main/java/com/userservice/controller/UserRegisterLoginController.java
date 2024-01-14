@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author gcq1109
  * @description: 注册
- * @date 2023/7/5 21:27
  * @email gcq1109@126.com
  */
 @RestController
